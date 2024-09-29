@@ -1,0 +1,7 @@
+{
+  "name": "Oaxaca",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
