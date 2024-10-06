@@ -3,7 +3,7 @@ export interface DatabaseConfig {
   password: string;
   database: string;
   host: string;
-  port?: number;  // Añadimos la propiedad port como opcional
+  port: number;
   dialect: 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql';
   dialectOptions?: {
     ssl?: {
@@ -25,6 +25,7 @@ const config: AppConfig = {
     password: "#Sincodigo1",
     database: "mi_base_de_datos",
     host: "127.0.0.1",
+    port: 3306,
     dialect: "mysql"
   },
   test: {
@@ -32,14 +33,15 @@ const config: AppConfig = {
     password: "#Sincodigo1",
     database: "mi_base_de_datos",
     host: "127.0.0.1",
+    port: 3306,
     dialect: "mysql"
   },
   production: {
-    username: process.env['MYSQLUSER'] || "",
-    password: process.env['MYSQLPASSWORD'] || "",
-    database: process.env['MYSQLDATABASE'] || "",
-    host: process.env['MYSQLHOST'] || "",
-    port: parseInt(process.env['MYSQLPORT'] || "3306"),
+    username: process.env.MYSQLUSER || "",
+    password: process.env.MYSQLPASSWORD || "",
+    database: process.env.MYSQLDATABASE || "",
+    host: process.env.MYSQLHOST || "",
+    port: parseInt(process.env.MYSQLPORT || "3306", 10),
     dialect: "mysql",
     dialectOptions: {
       ssl: {

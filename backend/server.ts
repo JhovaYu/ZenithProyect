@@ -23,8 +23,6 @@ import { generateQRCode } from './services/qr.services';
 
 if (process.env['NODE_ENV'] !== 'production') {
   dotenv.config({ path: '.env' });
-} else {
-  // En producción, las variables de entorno ya deberían estar configuradas
 }
 
 
@@ -35,18 +33,9 @@ const dbConfig = config[env as keyof AppConfig];
 const port: number = parseInt(process.env['PORT'] || '3000', 10);
 const JWT_SECRET: string = process.env['JWT_SECRET'] || '';
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Servidor corriendo en http://0.0.0.0:${port}`);
-}).on('error', (err) => {
-  console.error('Error al iniciar el servidor:', err);
-});
-
 //Middleware para permitir solicitudes desde cualquier origen
 app.use(cors());
 app.use(express.json());
-
-//Conexión a la base de datos 
-
 
 export const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   host: dbConfig.host,
@@ -56,6 +45,15 @@ export const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbC
 }); 
 
 export const { User, Clase, Attendance } = initializeAssociations();
+
+
+
+
+
+
+
+
+
 
 
 //Conexión a la base de datos
@@ -640,7 +638,25 @@ app.get('/api/attendance/report/:claseId/:date', verifyToken, checkRole(['admin'
 });
 
 
+// Iniciar el servidor
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexión a la base de datos establecida.');
+    
+    await sequelize.sync(); // { force: true } solo en desarrollo
+    console.log('Modelos sincronizados con la base de datos');
 
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`Servidor corriendo en http://0.0.0.0:${port}`);
+    });
+  } catch (error) {
+    console.error('Error al iniciar el servidor:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 
 
@@ -650,8 +666,6 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   res.status(500).json({ message: 'Error en el servidor', error: err.message });
 });
 
-sequelize.sync({ })
-  .then(() => console.log('Modelos sincronizados con la base de datos'))
-  .catch(err => console.error('Error al sincronizar modelos:', err));
+
 
 
