@@ -35,6 +35,12 @@ const dbConfig = config[env as keyof AppConfig];
 const port: number = parseInt(process.env['PORT'] || '3000', 10);
 const JWT_SECRET: string = process.env['JWT_SECRET'] || '';
 
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Servidor corriendo en http://0.0.0.0:${port}`);
+}).on('error', (err) => {
+  console.error('Error al iniciar el servidor:', err);
+});
+
 //Middleware para permitir solicitudes desde cualquier origen
 app.use(cors());
 app.use(express.json());
@@ -648,7 +654,4 @@ sequelize.sync({ })
   .then(() => console.log('Modelos sincronizados con la base de datos'))
   .catch(err => console.error('Error al sincronizar modelos:', err));
 
-// Iniciar el servidor
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Servidor corriendo en http://0.0.0.0:${port}`);
-});
+
