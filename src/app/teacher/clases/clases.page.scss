@@ -1,0 +1,64 @@
+.nueva-clase-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); // Fondo semi-transparente
+    z-index: 1000;
+}
+
+.nueva-clase-card {
+    width: calc(100% - 32px);
+    max-width: 400px;
+    margin: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nueva-clase-content {
+    max-height: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+}
+
+.header-container {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+ion-card-title {
+    flex: 1;  // Permite que el título ocupe el espacio disponible
+    margin-right: 10px;  // Añade un pequeño margen a la derecha del título
+}
+
+ion-card-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+
+    &.expanded {
+        max-height: 1000px; // Aumenta este valor si es necesario
+        opacity: 1;
+        transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
+    }
+}
+
+.options-button {
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.font_title {
+    font-size: 1.5em; // Aumenta el tamaño de la fuente
+    font-weight: bold; // Hace el texto en negrita
+    margin-top: 10px; // Añade un poco de espacio arriba si es necesario
+    color: #f0efef; // Cambia el color si lo deseas
+    margin: 0px;
+}

@@ -1,0 +1,22 @@
+.login-container {
+  height: 100%;
+}
+
+ion-content {
+  --background: var(--ion-color-light);
+}
+
+ion-card {
+  --background: var(--ion-color-light-tint);
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  ion-content {
+    --background: var(--ion-color-dark);
+  }
+
+  ion-card {
+    --background: var(--ion-color-dark-tint);
+  }
+}

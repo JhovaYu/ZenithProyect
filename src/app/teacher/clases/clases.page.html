@@ -1,0 +1,184 @@
+<ion-content>
+  <ion-grid class="ion-padding">
+    <!-- Tarjetas de clases existentes -->
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let clase of clases; let i = index">
+        <ion-card (click)="toggleCard(i)">
+          <ion-card-header>
+
+            <div class="header-container">
+              <ion-card-title class="font_title">{{ clase.nombre_clase }}</ion-card-title>
+              <ion-button fill="clear" (click)="presentActionSheet(clase); $event.stopPropagation()"  >
+                <ion-icon name="ellipsis-vertical"></ion-icon>
+              </ion-button>
+            </div>
+            <ion-card-subtitle class="font_title">{{ clase.materia }}</ion-card-subtitle>
+
+          </ion-card-header>
+
+          <ion-card-content [class.expanded]="expandedCard === i">
+            <p><strong>Días:</strong> {{ clase.dia_semana?.join(', ') || clase.dia_semana }}</p>
+            <p><strong>Horario:</strong> {{ clase.hora_inicio }} - {{ clase.hora_fin }}</p>
+            <p><strong>Aula:</strong> {{ clase.aula }}</p>
+            <p><strong>Fecha de inicio:</strong> {{ clase.fecha_inicio | date:'dd/MM/yyyy' }}</p>
+            <p><strong>Periodicidad:</strong> {{ clase.periodicidad }}</p>
+            <p><strong>Duración:</strong> {{ clase.duracion_semanas }} semanas</p>
+            <p *ngIf="clase.nota"><strong>Nota:</strong> {{ clase.nota }}</p>
+          </ion-card-content>
+
+          <div class="ion-padding">
+            <ion-button expand="block" (click)="pasarLista(clase)">Pasar lista</ion-button>
+            <ion-button expand="block" (click)="generarInforme(clase)">Generar informe</ion-button>
+          </div>
+          
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-padding">
+    <ion-fab-button (click)="toggleNuevaClaseCard()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="nueva-clase-container" *ngIf="mostrarNuevaClaseCard">
+    
+    <ion-card class="nueva-clase-card">
+      <ion-card-header>
+        <ion-card-title>{{ claseEnEdicion ? 'Editar clase' : 'Agregar nueva clase' }}</ion-card-title>
+        
+      </ion-card-header>
+      <ion-card-content class="nueva-clase-content">
+        
+        <ion-item>
+          <ion-label position="floating">Nombre de la clase</ion-label>
+          <ion-input [(ngModel)]="(claseEnEdicion || nuevaClase).nombre_clase"></ion-input>
+        </ion-item>
+
+        <ion-accordion-group>
+          <ion-accordion value="horario">
+            <ion-item slot="header">
+              <ion-label>Horario</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-accordion-group>
+                <ion-accordion value="hora_inicio">
+                  <ion-item slot="header">
+                    <ion-label>Hora de inicio</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    <ion-datetime presentation="time" hourCycle="h23"
+                    locale="es-ES" 
+                    [(ngModel)]="(claseEnEdicion || nuevaClase).hora_inicio"
+                    (ionChange)="onHoraInicioChange($event)"
+                    ></ion-datetime>
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+              <ion-accordion-group>
+                <ion-accordion value="hora_fin">
+                  <ion-item slot="header">
+                    <ion-label>Hora de fin (opcional)</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    <ion-datetime presentation="time" hourCycle="h23"
+                    locale="es-ES" 
+                    [(ngModel)]="(claseEnEdicion || nuevaClase).hora_fin"
+                    (ionChange)="onHoraFinChange($event)"
+                    ></ion-datetime>
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+              <ion-item>
+                <ion-label>Día de la semana</ion-label>
+                <ion-select [(ngModel)]="(claseEnEdicion || nuevaClase).dia_semana" multiple="true">
+                  <ion-select-option *ngFor="let dia of diasSemana" [value]="dia">{{dia}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </ion-accordion>
+
+          <ion-accordion value="fechas">
+            <ion-item slot="header">
+              <ion-label>Fechas y Periodicidad</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-accordion-group>
+                <ion-accordion value="fecha_inicio">
+                  <ion-item slot="header">
+                    <ion-label>Fecha de inicio</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    <ion-datetime display-format="DD/MM/YYYY" 
+                    picker-format="DD MMM YYYY" 
+                    [(ngModel)]="(claseEnEdicion || nuevaClase).fecha_inicio"
+                    (ionChange)="onFechaInicioChange($event)"
+                    ></ion-datetime>
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+              <ion-accordion-group>
+                <ion-accordion value="fecha_fin">
+                  <ion-item slot="header">
+                    <ion-label>Fecha de fin (opcional)</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    <ion-datetime display-format="DD/MM/YYYY" picker-format="DD MMM YYYY" [(ngModel)]="(claseEnEdicion || nuevaClase).fecha_fin"></ion-datetime>
+                  </div>
+                </ion-accordion>
+                <ion-accordion value="periodicidad">
+                  <ion-item slot="header">
+                    <ion-label>Periodicidad</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    <ion-select [(ngModel)]="(claseEnEdicion || nuevaClase).periodicidad">
+                      <ion-select-option *ngFor="let periodo of periodicidades" [value]="periodo">{{periodo}}</ion-select-option>
+                    </ion-select>
+                    <ion-item>
+                      <ion-label position="floating">Duración en semanas</ion-label>
+                      <ion-input type="number" [(ngModel)]="(claseEnEdicion || nuevaClase).duracion_semanas"></ion-input>
+                    </ion-item>
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+            </div>
+          </ion-accordion>
+
+          <ion-accordion value="ubicacion">
+            <ion-item slot="header">
+              <ion-label>Ubicación y Materia</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-item>
+                <ion-label position="floating">Aula</ion-label>
+                <ion-input [(ngModel)]="(claseEnEdicion || nuevaClase).aula"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Materia</ion-label>
+                <ion-input [(ngModel)]="(claseEnEdicion || nuevaClase).materia"></ion-input>
+              </ion-item>
+            </div>
+          </ion-accordion>
+
+          <ion-accordion value="notas">
+            <ion-item slot="header">
+              <ion-label>Notas</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-item>
+                <ion-label position="floating">Nota (opcional)</ion-label>
+                <ion-textarea [(ngModel)]="(claseEnEdicion || nuevaClase).nota"></ion-textarea>
+              </ion-item>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+
+        <ion-button expand="block" (click)="guardarClase()">{{ claseEnEdicion ? 'Actualizar' : 'Guardar' }}</ion-button>
+        <ion-button expand="block" fill="clear" (click)="toggleNuevaClaseCard()">Cancelar</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  
+</ion-content>

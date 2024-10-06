@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid class="login-container">
+    <ion-row class="ion-justify-content-center ion-align-items-center">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">Registrarme</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <ion-item>
+                <ion-label position="floating">Nombre</ion-label>
+                <ion-input type="text" formControlName="nombre" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Apellidos</ion-label>
+                <ion-input type="text" formControlName="apellido" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Matricula</ion-label>
+                <ion-input type="text" formControlName="matricula" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Correo electrónico</ion-label>
+                <ion-input type="email" formControlName="email" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Contraseña</ion-label>
+                <ion-input type="password" formControlName="password" required></ion-input>
+              </ion-item>
+              <ion-button expand="block" type="submit" [disabled]="!registerForm.valid">Registrarse</ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

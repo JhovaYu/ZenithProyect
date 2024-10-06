@@ -1,0 +1,23 @@
+ion-avatar {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+  
+  .edit-avatar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #3880ff;
+    color: white;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 20px;
+  }
+  
+  .edit-icon {
+    font-size: 18px;
+    margin-left: 8px;
+    color: #3880ff;
+  }

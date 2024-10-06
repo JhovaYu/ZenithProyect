@@ -1,0 +1,1 @@
+export function generateAttendanceReport(claseId: number, date: string): Promise<Uint8Array>;

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Código QR para asistencia</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ng-container *ngIf="qrCode; else noQrCode">
+    <img [src]="qrCode" alt="Código QR">
+    <p>Escanea este código QR para registrar tu asistencia</p>
+  </ng-container>
+  <ng-template #noQrCode>
+    <p>No se ha podido generar el código QR. Por favor, inténtalo de nuevo.</p>
+  </ng-template>
+</ion-content>
