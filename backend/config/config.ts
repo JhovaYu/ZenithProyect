@@ -37,11 +37,11 @@ const config: AppConfig = {
     dialect: "mysql"
   },
   production: {
-    username: process.env.MYSQLUSER || "",
-    password: process.env.MYSQLPASSWORD || "",
-    database: process.env.MYSQLDATABASE || "",
-    host: process.env.MYSQLHOST || "",
-    port: parseInt(process.env.MYSQLPORT || "3306", 10),
+    username: process.env['MYSQLUSER'] || "",
+    password: process.env['MYSQLPASSWORD'] || "",
+    database: process.env['MYSQLDATABASE'] || "",
+    host: process.env['MYSQLHOST'] || "",
+    port: parseInt(process.env['MYSQLPORT'] || "3306", 10),
     dialect: "mysql",
     dialectOptions: {
       ssl: {
