@@ -89,6 +89,10 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 });
 
 
+app.get('/', (req: express.Request, res: express.Response) => {
+  res.redirect('/login');
+});
+
 //Ruta para registrar un nuevo usuario
 app.post('/api/register', async (req: express.Request, res: express.Response) => {
   try {
