@@ -52,11 +52,20 @@ const env = process.env['NODE_ENV'] || 'development';
 const dbConfig = config[env as keyof AppConfig];
 const port: number = parseInt(process.env['PORT'] || '3000', 10);
 
+const corsOptions = {
+  origin: 'https://zenithproyect-production.up.railway.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
 
 //Middleware para permitir solicitudes desde cualquier origen
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../../www')));
+
+
 
 
 
@@ -99,6 +108,9 @@ app.get('*', (req, res) => {
 
 
 
+
+
+
 //Ruta para registrar un nuevo usuario
 app.post('/api/register', async (req: express.Request, res: express.Response) => {
   try {
@@ -125,7 +137,7 @@ app.post('/api/register', async (req: express.Request, res: express.Response) =>
 
 
 //Ruta para iniciar sesión
-app.post('/api/login', (req: Request, res: Response, next: express.NextFunction) => {
+app.post('/login', (req: Request, res: Response, next: express.NextFunction) => {
   (async (): Promise<any> => {
   try {
     const { email, password } = req.body;
