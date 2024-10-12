@@ -112,7 +112,7 @@ app.get('*', (req, res) => {
 
 
 //Ruta para registrar un nuevo usuario
-app.post('/api/register', async (req: express.Request, res: express.Response) => {
+app.post('/register', async (req: express.Request, res: express.Response) => {
   try {
     const { nombre, apellido, matricula, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -304,7 +304,7 @@ const isAdmin = (req: express.Request, res: express.Response, next: express.Next
 };
 
 // Nueva ruta para que los admins registren otros usuarios
-app.post('/api/admin/register', verifyToken, isAdmin, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.post('/admin/register', verifyToken, isAdmin, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.log('Intento de registro de admin. User ID:', req.userId, 'Role:', req.userRole);
   try {
     const { nombre, apellido, matricula, email, password, rol } = req.body;
@@ -354,7 +354,7 @@ Clase.belongsTo(User, { foreignKey: 'profesorId' });
 
 
 //Ruta para crear una nueva clase
-app.post('/api/clases', verifyToken, checkRole(['admin', 'teacher']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.post('/clases', verifyToken, checkRole(['admin', 'teacher']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const { 
       nombre_clase, 
@@ -547,7 +547,7 @@ app.get('/api/attendance/qr/:claseId',
 ////////////////////////////////////////////////////////////////////
 
 //Ruta para registrar la asistencia de un estudiante
-app.post('/api/attendance/register', verifyToken, checkRole(['student']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.post('/attendance/register', verifyToken, checkRole(['student']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const { claseId, equipo } = req.body;
     if (req.userId === undefined) {
@@ -634,17 +634,17 @@ app.put('/api/student/profile', verifyToken, checkRole(['student']), async (req:
 ////////////////////////////////////////////////////////////////////    
 
 // Iniciar sesión de asistencia
-app.post('/api/attendance/start', verifyToken, checkRole(['teacher']), async (req: express.Request, res: express.Response) => {
+app.post('/attendance/start', verifyToken, checkRole(['teacher']), async (req: express.Request, res: express.Response) => {
   // Lógica para iniciar la sesión de asistencia
 });
 
 // Registrar asistencia de estudiante
-app.post('/api/attendance/register', verifyToken, checkRole(['student']), async (req: express.Request, res: express.Response) => {
+app.post('/attendance/register', verifyToken, checkRole(['student']), async (req: express.Request, res: express.Response) => {
   // Lógica para registrar la asistencia de un estudiante
 });
 
 // Finalizar sesión de asistencia y generar informe
-app.post('/api/attendance/end', verifyToken, checkRole(['teacher']), async (req: express.Request, res: express.Response) => {
+app.post('/attendance/end', verifyToken, checkRole(['teacher']), async (req: express.Request, res: express.Response) => {
   // Lógica para finalizar la sesión y generar el informe
 });
 
