@@ -56,7 +56,7 @@ const port: number = parseInt(process.env['PORT'] || '3000', 10);
 //Middleware para permitir solicitudes desde cualquier origen
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../www')));
+app.use(express.static(path.join(__dirname, '../www')));
 
 export const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   host: dbConfig.host,
