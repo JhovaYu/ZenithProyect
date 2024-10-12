@@ -127,6 +127,7 @@ app.post('/register', async (req: express.Request, res: express.Response) => {
     const token = jwt.sign({ userId: user.id, rol: user.rol }, JWT_SECRET, { expiresIn: '1h' });
     res.status(201).json({ message: 'Usuario registrado con éxito', token });
   } catch (error) {
+    console.error('Error de validación1:', error);
     if (error instanceof Error) {
       res.status(400).json({ message: 'Error al registrar usuario', error: error.message });
     } else {
