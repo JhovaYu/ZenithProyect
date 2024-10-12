@@ -89,9 +89,13 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 });
 
 
-app.get('/', (req: express.Request, res: express.Response) => {
-  res.redirect('/login');
+//Middleware para servir archivos estáticos
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../www/index.html'));
 });
+
+app.use(express.static(path.join(__dirname, '../www')));
+
 
 //Ruta para registrar un nuevo usuario
 app.post('/api/register', async (req: express.Request, res: express.Response) => {
