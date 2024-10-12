@@ -56,6 +56,7 @@ const port: number = parseInt(process.env['PORT'] || '3000', 10);
 //Middleware para permitir solicitudes desde cualquier origen
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../www')));
 
 export const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   host: dbConfig.host,
@@ -91,10 +92,9 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 
 //Middleware para servir archivos estáticos
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../www/index.html'));
+  res.sendFile(path.join(__dirname, '../www/index.html'));
 });
 
-app.use(express.static(path.join(__dirname, '../www')));
 
 
 //Ruta para registrar un nuevo usuario

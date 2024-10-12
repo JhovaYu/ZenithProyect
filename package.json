@@ -8,6 +8,7 @@
     "start": "node dist/backend/server.js",
     "build": "node setEnv.js && tsc -p backend/tsconfig.json && ng build --configuration production",
     "dev:backend": "ts-node-dev --project backend/tsconfig.json backend/server.ts",
+    "build:backend": "tsc --project backend/tsconfig.json",
     "dev:frontend": "ng serve",
     "create-admin": "ts-node backend/scripts/createAdmin.ts",
     "postinstall": "npm run build",
