@@ -3,7 +3,7 @@
   "version": "0.0.8",
   "author": "JhovaYu",
   "homepage": "https://ionicframework.com/",
-  "main": "dist/backend/server.js",
+  "main": "/",
   "scripts": {
     "start": "node dist/backend/server.js",
     "build": "node setEnv.js && tsc -p backend/tsconfig.json && ng build --configuration production",

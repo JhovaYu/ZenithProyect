@@ -653,6 +653,18 @@ app.get('/api/attendance/report/:claseId/:date', verifyToken, checkRole(['admin'
 });
 
 
+
+
+
+
+
+//Middleware para manejar errores
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Error en el servidor', error: err.message });
+});
+
+
 // Iniciar el servidor
 const startServer = async () => {
   try {
@@ -672,14 +684,6 @@ const startServer = async () => {
 };
 
 startServer();
-
-
-
-//Middleware para manejar errores
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Error en el servidor', error: err.message });
-});
 
 
 
