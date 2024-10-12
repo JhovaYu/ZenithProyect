@@ -8,6 +8,9 @@ declare global {
 }
 
 import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
 import express, { Request, Response } from 'express';
 import { Sequelize, Model, DataTypes, Config } from 'sequelize';
 import { initializeAssociations } from './models/associations';
@@ -21,8 +24,25 @@ import { AttendanceInstance, AttendanceAttributes } from './models/attendance.mo
 import { generateAttendanceReport } from './services/attendance/excel.service';
 import { generateQRCode } from './services/qr.services';
 
-if (process.env['NODE_ENV'] !== 'production') {
-  dotenv.config({ path: '.env' });
+if (process.env['NODE_ENV'] == 'production') {
+  const requiredEnvVars = ['MYSQLPASSWORD', 'MYSQLDATABASE', 'MYSQLHOST'];
+  const missingEnvVars: string[] = [];
+
+  requiredEnvVars.forEach((varName) => {
+    if (!process.env[varName]) {
+      missingEnvVars.push(varName);
+    }
+  });
+
+  if (missingEnvVars.length > 0) {
+    console.error('Faltan algunas variables de entorno requeridas para la base de datos:', missingEnvVars.join(', '));
+    throw new Error('Faltan algunas variables de entorno requeridas para la base de datos.');
+  }
+}
+
+const JWT_SECRET: string = process.env['JWT_SECRET'] || '';
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido. Configura una clave secreta en las variables de entorno.');
 }
 
 
@@ -31,7 +51,7 @@ const app: express.Application = express();
 const env = process.env['NODE_ENV'] || 'development';
 const dbConfig = config[env as keyof AppConfig];
 const port: number = parseInt(process.env['PORT'] || '3000', 10);
-const JWT_SECRET: string = process.env['JWT_SECRET'] || '';
+
 
 //Middleware para permitir solicitudes desde cualquier origen
 app.use(cors());
@@ -47,23 +67,18 @@ export const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbC
 export const { User, Clase, Attendance } = initializeAssociations();
 
 
-
-
-
-
-
-
-
-
-
 //Conexión a la base de datos
-sequelize.authenticate()
-  .then(() => console.log('Conexión a la base de datos establecida.'))
-  .catch(err => console.error('Error al conectar a la base de datos:', err));
+async function connectDatabase() {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexión a la base de datos establecida.');
+  } catch (err) {
+    console.error('Error al conectar a la base de datos:', err);
+    throw new Error('No se pudo conectar a la base de datos. Verifica la configuración.');
+  }
+}
 
- 
-
-
+connectDatabase();
 
 
 //Middleware para loggear las solicitudes

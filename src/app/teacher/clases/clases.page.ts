@@ -6,10 +6,10 @@ import { ActionSheetController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { AttendanceOptionsComponent } from '../../components/attendance-options/attendance-options.component';
-import { generateAttendanceReport } from '../../../../backend/services/attendance/excel.service.js';
 import { HttpClient } from '@angular/common/http';
 import { QRCodeComponent } from 'src/app/components/qr-code/qr-code.component';
 import { QrService } from 'src/app/services/qr.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-clases',
@@ -309,7 +309,7 @@ export class ClasesPage implements OnInit {
 
   async generarQR(claseId: number) {
     try {
-      const response = await this.qrService.generateQR(claseId).toPromise();
+      const response = await firstValueFrom(this.qrService.generateQR(claseId));
       if (response && response.qrCode) {
         const qrCodeModal = await this.modalController.create({
           component: QRCodeComponent,
@@ -329,7 +329,9 @@ export class ClasesPage implements OnInit {
   async generarInforme(clase: Clase) {
     const date = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
     try {
-      const response = await this.http.get(`/api/attendance/report/${clase.id_clase}/${date}`, { responseType: 'blob' }).toPromise();
+      const response = await firstValueFrom(
+        this.http.get(`/api/attendance/report/${clase.id_clase}/${date}`, { responseType: 'blob' })
+      );
       
       if (response) {
         const url = window.URL.createObjectURL(response);

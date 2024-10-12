@@ -1,3 +1,11 @@
+const requiredEnvVars = ['MYSQLUSER', 'MYSQLPASSWORD', 'MYSQLDATABASE', 'MYSQLHOST', 'MYSQLPORT'];
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingEnvVars.length > 0) {
+  console.error(`Faltan las siguientes variables de entorno: ${missingEnvVars.join(', ')}`);
+  throw new Error('Variables de entorno faltantes.');
+}
+
 export interface DatabaseConfig {
   username: string;
   password: string;

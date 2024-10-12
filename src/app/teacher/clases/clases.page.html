@@ -17,7 +17,7 @@
           </ion-card-header>
 
           <ion-card-content [class.expanded]="expandedCard === i">
-            <p><strong>Días:</strong> {{ clase.dia_semana?.join(', ') || clase.dia_semana }}</p>
+            <p><strong>Días:</strong> {{ clase.dia_semana.join(', ') || clase.dia_semana }}</p>
             <p><strong>Horario:</strong> {{ clase.hora_inicio }} - {{ clase.hora_fin }}</p>
             <p><strong>Aula:</strong> {{ clase.aula }}</p>
             <p><strong>Fecha de inicio:</strong> {{ clase.fecha_inicio | date:'dd/MM/yyyy' }}</p>
