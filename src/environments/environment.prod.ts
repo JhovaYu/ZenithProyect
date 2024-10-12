@@ -1,6 +1,6 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://default-api.com',
+  apiUrl: 'https://zenithproyect-production.up.railway.app',
   // Puedes agregar más variables aquí según sea necesario
 };
