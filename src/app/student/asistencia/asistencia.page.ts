@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy , AfterViewInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Html5Qrcode } from "html5-qrcode";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 
@@ -105,6 +105,9 @@ export class AsistenciaPage implements OnInit {
 
   async registerAttendance(claseId: number) {
     try {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
       const response = await firstValueFrom (this.http.post('/api/attendance/register', {
         claseId: claseId,
         equipo: this.usoEquipoPropio ? 'Propio' : this.equipoNumber
