@@ -17,8 +17,13 @@ export class ClaseService {
 
   obtenerClases(): Observable<Clase[]> {
     console.log('Iniciando obtenerClases()');
+    const token = localStorage.getItem('token');
+    console.log('Token recuperado de localStorage:', token);
 
-    const headers = new HttpHeaders({ 'Accept': 'application/json' });
+    const headers = new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      });
     console.log('Headers creados:', headers);
 
     console.log('Despues de HttpHeaders');

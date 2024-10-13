@@ -225,6 +225,12 @@ export class ClasesPage implements OnInit {
 
       error: (error) => {
         console.error('Error al cargar las clases', error);
+        if (error.error instanceof ErrorEvent) {
+          console.error('Error del cliente:', error.error.message);
+        } else {
+          console.error(`Código de error ${error.status}, ` +
+            `cuerpo: ${error.error}`);
+        }
         console.error('Detalles del error:', error.message, 'Status:', error.status, 'URL:', error.url);
       }  
     });

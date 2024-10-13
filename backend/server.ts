@@ -404,6 +404,7 @@ app.post('/api/clases', verifyToken, checkRole(['admin', 'teacher']), async (req
 //Ruta para obtener las clases
 app.get('/api/clases', verifyToken, async (req: express.Request, res: express.Response) => {
   console.log('Intento de obtener clases. User ID:', req.userId, 'Rol:', req.userRole);
+  console.log('Headers recibidos server:', req.headers);
 
   try {
     const clases = await Clase.findAll({
@@ -414,6 +415,7 @@ app.get('/api/clases', verifyToken, async (req: express.Request, res: express.Re
 
     if (clases.length === 0) {
       console.warn('No se encontraron clases para el usuario', req.userId);
+      res.status(404).json({ message: 'No se encontraron clases' });
     } else {
       console.log('Clases encontradas:', clases);
     }
