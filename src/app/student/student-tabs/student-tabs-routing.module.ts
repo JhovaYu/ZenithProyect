@@ -26,11 +26,6 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '',
-    redirectTo: '/student/asistencia',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({
