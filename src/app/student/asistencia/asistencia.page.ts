@@ -111,7 +111,7 @@ export class AsistenciaPage implements OnInit {
       const response = await firstValueFrom (this.http.post('/api/attendance/register', {
         claseId: claseId,
         equipo: this.usoEquipoPropio ? 'Propio' : this.equipoNumber
-      }));
+      }, { headers }));
       this.presentToast('Asistencia registrada:', 'checkmark-circle');
     } catch (error) {
       this.presentToast('Error al registrar la asistencia registerAttendance:', 'close-circle');
