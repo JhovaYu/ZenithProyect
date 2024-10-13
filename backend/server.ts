@@ -217,7 +217,7 @@ const verifyToken = (req: express.Request, res: express.Response, next: express.
 
 
 //Ruta para obtener el perfil del usuario
-app.get('/api/user',  async (req: express.Request, res: express.Response) => {
+app.get('/api/user', verifyToken,  async (req: express.Request, res: express.Response) => {
   try {
     const user = await User.findByPk(req.userId, {
       attributes: ['id', 'nombre', 'apellido', 'matricula', 'email', 'rol']
@@ -402,7 +402,7 @@ app.post('/api/clases', verifyToken, checkRole(['admin', 'teacher']), async (req
 
 
 //Ruta para obtener las clases
-app.get('/api/clases', verifyToken, async (req: express.Request, res: express.Response) => {
+app.get('/api/clases',async (req: express.Request, res: express.Response) => {
   console.log('Intento de obtener clases. User ID:', req.userId, 'Rol:', req.userRole);
   console.log('Headers recibidos server:', req.headers);
 
