@@ -217,7 +217,7 @@ const verifyToken = (req: express.Request, res: express.Response, next: express.
 
 
 //Ruta para obtener el perfil del usuario
-app.get('/api/user', verifyToken, async (req: express.Request, res: express.Response) => {
+app.get('/api/user',  async (req: express.Request, res: express.Response) => {
   try {
     const user = await User.findByPk(req.userId, {
       attributes: ['id', 'nombre', 'apellido', 'matricula', 'email', 'rol']
