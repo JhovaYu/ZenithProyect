@@ -32,6 +32,7 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      console.log('Formulario enviado:', this.registerForm.value);
       this.http.post(`${this.apiUrl}/register`, this.registerForm.value).subscribe({
         next: (response: any) => {
           console.log('Usuario registrado', response);
@@ -39,7 +40,8 @@ export class RegisterPage implements OnInit {
           this.router.navigate(['/student']);
         },
         error: (error) => {
-          console.error('Error al registrar', error);
+          console.error('Error al registrar123', error);
+          console.log('Datos que supuestamente se estan enviando:', this.registerForm.value);
           // Aquí puedes mostrar un mensaje de error al usuario
         }
       });
