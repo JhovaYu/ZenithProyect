@@ -208,8 +208,10 @@ export class ClasesPage implements OnInit {
 
   //Función para cargar las clases
   cargarClases() {
+    console.log('Iniciando cargarClases()');
     this.claseService.obtenerClases().subscribe({
       next: (clases) => {
+        console.log('Clases obtenidas exitosamente:', clases);
         this.clases = clases.map(clase => ({
           ...clase,
           dia_semana: Array.isArray(clase.dia_semana) ? clase.dia_semana : JSON.parse(clase.dia_semana)

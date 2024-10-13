@@ -14,8 +14,10 @@ export class ClaseService {
   constructor(private http: HttpClient) {}
 
   obtenerClases(): Observable<Clase[]> {
+    console.log('Iniciando obtenerClases()');
     const headers = new HttpHeaders({ 'Accept': 'application/json' });
     return this.http.get<Clase[]>(`${this.apiUrl}`, { headers });
+    console.log('Terminando obtenerClases()');
   }
 
   crearClase(clase: Clase): Observable<Clase> {
