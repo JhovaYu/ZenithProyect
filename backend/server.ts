@@ -102,10 +102,10 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 
 
 //Middleware para servir archivos estáticos
-app.get('*', (req, res) => {
+/*app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../www/index.html'));
 });
-
+*/
 
 
 
