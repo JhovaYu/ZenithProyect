@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy , AfterViewInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Html5Qrcode } from "html5-qrcode";
 import { HttpClient } from '@angular/common/http';
@@ -23,8 +23,12 @@ export class AsistenciaPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+  
+  ngAfterViewInit() {
     this.html5QrCode = new Html5Qrcode("reader");
   }
+
 
   ngOnDestroy() {
     if (this.html5QrCode) {

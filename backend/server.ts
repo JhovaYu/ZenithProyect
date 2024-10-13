@@ -330,9 +330,9 @@ app.post('api/admin/register', verifyToken, isAdmin, async (req: express.Request
   } catch (error) {
     next(error);
     if (error instanceof Error) {
-      res.status(400).json({ message: 'Error al registrar usuario', error: error.message });
+      res.status(400).json({ message: 'Error al registrar usuario 1', error: error.message });
     } else {
-      res.status(400).json({ message: 'Error al registrar usuario', error: 'Un error desconocido ocurrió' });
+      res.status(400).json({ message: 'Error al registrar usuario 2', error: 'Un error desconocido ocurrió' });
     }
   }
 });
