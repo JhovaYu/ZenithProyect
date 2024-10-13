@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-admin',
@@ -12,6 +13,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class AdminPage implements OnInit {
   adminName: string = '';
   registerForm: FormGroup;
+  apiUrl = environment.apiUrl;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,7 +38,7 @@ export class AdminPage implements OnInit {
       const token = this.authService.getToken();
       console.log('Token being sent:', token); // Para depuración
 
-      this.http.post('${this.apiUrl}/api/admin/register', this.registerForm.value, {
+      this.http.post(`${this.apiUrl}/api/admin/register`, this.registerForm.value, {
         headers: new HttpHeaders({
           'Authorization': `Bearer ${token}`
         })

@@ -25,9 +25,7 @@ export class AsistenciaPage implements OnInit {
   ngOnInit() {
   }
   
-  ngAfterViewInit() {
-    this.html5QrCode = new Html5Qrcode("reader");
-  }
+  
 
 
   ngOnDestroy() {
@@ -61,19 +59,22 @@ export class AsistenciaPage implements OnInit {
       stream.getTracks().forEach(track => track.stop()); // Detener la transmisión inmediatamente después de obtener el permiso
 
       this.showScanner = true;
-      if (this.html5QrCode) {
-        await this.html5QrCode.start(
-          { facingMode: "environment" },
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 250 }
-          },
-          this.onCodeScanned.bind(this),
-          (errorMessage) => {
-            console.log(`QR error: ${errorMessage}`);
-          }
-        );
-      }
+      setTimeout(() => {
+        this.html5QrCode = new Html5Qrcode("reader");
+        if (this.html5QrCode) {
+          this.html5QrCode.start(
+            { facingMode: "environment" },
+            {
+              fps: 10,
+              qrbox: { width: 250, height: 250 }
+            },
+            this.onCodeScanned.bind(this),
+            (errorMessage) => {
+              console.log(`QR error: ${errorMessage}`);
+            }
+          );
+        }
+      }, 0);
     } catch (err) {
       console.error(`Error al iniciar el escaneo: ${err}`);
       await this.presentToast('No se pudo acceder a la cámara. Por favor, concede los permisos necesarios.', 'close-circle');

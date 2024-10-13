@@ -7,9 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: StudentPage
-  },  {
-    path: 'student-tabs',
-    loadChildren: () => import('./student-tabs/student-tabs.module').then( m => m.StudentTabsPageModule)
   },
   {
     path: 'student-tabs',
