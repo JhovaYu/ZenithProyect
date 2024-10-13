@@ -212,12 +212,21 @@ export class ClasesPage implements OnInit {
     this.claseService.obtenerClases().subscribe({
       next: (clases) => {
         console.log('Clases obtenidas exitosamente:', clases);
+
+        // Verificar si hay clases
+      if (clases.length === 0) {
+        console.warn('No se encontraron clases');
+      }
         this.clases = clases.map(clase => ({
           ...clase,
           dia_semana: Array.isArray(clase.dia_semana) ? clase.dia_semana : JSON.parse(clase.dia_semana)
         }));
       },
-      error: (error) => console.error('Error al cargar las clases', error)
+
+      error: (error) => {
+        console.error('Error al cargar las clases', error);
+        console.error('Detalles del error:', error.message, 'Status:', error.status, 'URL:', error.url);
+      }  
     });
   }
 

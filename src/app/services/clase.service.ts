@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { Clase } from '../models/clase.model';
 import { environment } from '../../environments/environment.prod';
 import { HttpHeaders } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,17 @@ export class ClaseService {
 
   obtenerClases(): Observable<Clase[]> {
     console.log('Iniciando obtenerClases()');
+
     const headers = new HttpHeaders({ 'Accept': 'application/json' });
-    return this.http.get<Clase[]>(`${this.apiUrl}`, { headers });
-    console.log('Terminando obtenerClases()');
+    console.log('Headers creados:', headers);
+
+    console.log('Despues de HttpHeaders');
+    return this.http.get<Clase[]>(`${this.apiUrl}`, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al hacer la solicitud HTTP:', error);
+        return throwError(() => error); // Re-emite el error para que pueda ser capturado en el componente
+      })
+    );
   }
 
   crearClase(clase: Clase): Observable<Clase> {

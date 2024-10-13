@@ -403,22 +403,29 @@ app.post('/api/clases', verifyToken, checkRole(['admin', 'teacher']), async (req
 
 //Ruta para obtener las clases
 app.get('/api/clases', verifyToken, async (req: express.Request, res: express.Response) => {
-  console.log('Intento de obtener clases. User ID');
-  console.log('Usuario autenticado:', req.userId, 'Rol:', req.userRole);
+  console.log('Intento de obtener clases. User ID:', req.userId, 'Rol:', req.userRole);
+
   try {
     const clases = await Clase.findAll({
       where: req.userRole === 'teacher' ? { profesorId: req.userId } : {},
       include: [{ model: User, attributes: ['nombre', 'apellido'] }],
       order: [['fecha_inicio', 'ASC'], ['hora_inicio', 'ASC']]
     });
+
+    if (clases.length === 0) {
+      console.warn('No se encontraron clases para el usuario', req.userId);
+    } else {
+      console.log('Clases encontradas:', clases);
+    }
+
     console.log('Clases encontradas:', clases); // Agregar un log aquí
     res.json(clases);
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error al obtener las clases:', error);
+      console.error('Error al obtener las clases:', error.message, error.stack);
       res.status(500).json({ message: 'Error al obtener las clases', error: error.message });
     } else {
-      console.error('Error al obtener las clases:', error);
+      console.error('Error desconocido al obtener las clases');
       res.status(500).json({ message: 'Error al obtener las clases', error: 'Un error desconocido ocurrió' });
     }
   }
