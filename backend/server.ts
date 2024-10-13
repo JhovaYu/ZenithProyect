@@ -355,7 +355,7 @@ Clase.belongsTo(User, { foreignKey: 'profesorId' });
 
 
 //Ruta para crear una nueva clase
-app.post('/clases', verifyToken, checkRole(['admin', 'teacher']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.post('/api/clases', verifyToken, checkRole(['admin', 'teacher']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const { 
       nombre_clase, 
@@ -410,6 +410,7 @@ app.get('/api/clases', verifyToken, async (req: express.Request, res: express.Re
       include: [{ model: User, attributes: ['nombre', 'apellido'] }],
       order: [['fecha_inicio', 'ASC'], ['hora_inicio', 'ASC']]
     });
+    console.log('Clases encontradas:', clases); // Agregar un log aquí
     res.json(clases);
   } catch (error) {
     if (error instanceof Error) {

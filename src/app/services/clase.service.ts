@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Clase } from '../models/clase.model';
 import { environment } from '../../environments/environment.prod';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class ClaseService {
   constructor(private http: HttpClient) {}
 
   obtenerClases(): Observable<Clase[]> {
-    return this.http.get<Clase[]>(`${this.apiUrl}`);
+    const headers = new HttpHeaders({ 'Accept': 'application/json' });
+    return this.http.get<Clase[]>(`${this.apiUrl}`, { headers });
   }
 
   crearClase(clase: Clase): Observable<Clase> {
