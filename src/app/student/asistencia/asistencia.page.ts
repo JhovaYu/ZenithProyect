@@ -94,7 +94,8 @@ export class AsistenciaPage implements OnInit {
   async processQRCode(qrContent: string) {
     try {
       const qrData = JSON.parse(qrContent);
-      await this.registerAttendance(qrData.claseId);
+      await this.presentToast('Procesando código QR...', 'ellipsis-horizontal');
+      await this.registerAttendance(parseInt(qrData.claseId, 10));
       await this.presentToast('Asistencia registrada con éxito', 'checkmark-circle');
     } catch (error) {
       console.error('Error al procesar el código QR:', error);
