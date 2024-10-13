@@ -562,7 +562,7 @@ app.get('/api/attendance/qr/:claseId',
 ////////////////////////////////////////////////////////////////////
 
 //Ruta para registrar la asistencia de un estudiante
-app.post('/attendance/register', verifyToken, checkRole(['student']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.post('/api/attendance/register', verifyToken, checkRole(['student']), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const { claseId, equipo } = req.body;
     if (req.userId === undefined) {
