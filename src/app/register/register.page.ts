@@ -43,6 +43,8 @@ export class RegisterPage implements OnInit {
           console.error('Error al registrar123', error);
           console.log('Datos que supuestamente se estan enviando:', this.registerForm.value);
           // Aquí puedes mostrar un mensaje de error al usuario
+          console.log('${this.apiUrl}/register');
+          console.log(`${this.apiUrl}/register`);
         }
       });
     }
