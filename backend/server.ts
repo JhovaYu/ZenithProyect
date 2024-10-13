@@ -419,6 +419,9 @@ app.get('/api/clases', verifyToken, async (req: express.Request, res: express.Re
     }
 
     console.log('Clases encontradas:', clases); // Agregar un log aquí
+    console.log('Clases en JSON:', JSON.stringify(clases, null, 2));
+
+    res.setHeader('Content-Type', 'application/json');
     res.json(clases);
   } catch (error) {
     if (error instanceof Error) {

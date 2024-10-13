@@ -4,7 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { Clase } from '../models/clase.model';
 import { environment } from '../../environments/environment.prod';
 import { HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,9 @@ export class ClaseService {
 
     console.log('Despues de HttpHeaders');
     return this.http.get<Clase[]>(`${this.apiUrl}`, { headers }).pipe(
+      tap((response) => {
+        console.log('Respuesta sin procesar:', response);
+      }),
       catchError((error) => {
         console.error('Error al hacer la solicitud HTTP:', error);
         return throwError(() => error); // Re-emite el error para que pueda ser capturado en el componente
