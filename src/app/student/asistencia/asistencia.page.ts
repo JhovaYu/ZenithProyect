@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy , AfterViewInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Html5Qrcode } from "html5-qrcode";
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -82,7 +83,7 @@ export class AsistenciaPage implements OnInit {
   }
 
   async onCodeScanned(decodedText: string, decodedResult: any) {
-    console.log(`Código escaneado: ${decodedText}`, decodedResult);
+    this.presentToast(`Código escaneado: ${decodedText}`, decodedResult);
     this.showScanner = false;
     if (this.html5QrCode) {
       await this.html5QrCode.stop();
@@ -97,19 +98,19 @@ export class AsistenciaPage implements OnInit {
       await this.presentToast('Asistencia registrada con éxito', 'checkmark-circle');
     } catch (error) {
       console.error('Error al procesar el código QR:', error);
-      await this.presentToast('Error al registrar la asistencia', 'close-circle');
+      await this.presentToast('Error al registrar la asistencia processQRCode', 'close-circle');
     }
   }
 
   async registerAttendance(claseId: number) {
     try {
-      const response = await this.http.post('/api/attendance/register', {
+      const response = await firstValueFrom (this.http.post('/api/attendance/register', {
         claseId: claseId,
         equipo: this.usoEquipoPropio ? 'Propio' : this.equipoNumber
-      }).toPromise();
-      console.log('Asistencia registrada:', response);
+      }));
+      this.presentToast('Asistencia registrada:', 'checkmark-circle');
     } catch (error) {
-      console.error('Error al registrar la asistencia:', error);
+      this.presentToast('Error al registrar la asistencia registerAttendance:', 'close-circle');
       throw error;
     }
   }

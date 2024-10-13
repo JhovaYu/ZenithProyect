@@ -720,6 +720,11 @@ const startServer = async () => {
   }
 };
 
+// Middleware para servir archivos estáticos (para todas las rutas que no son de la API)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../www/index.html'));
+});
+
 startServer();
 
 
