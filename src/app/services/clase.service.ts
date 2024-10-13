@@ -4,14 +4,15 @@ import { Observable, throwError } from 'rxjs';
 import { Clase } from '../models/clase.model';
 import { environment } from '../../environments/environment.prod';
 import { HttpHeaders } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClaseService {
-  private apiUrl = `${environment.apiUrl}/api/clases`;
+  private apiUrl = `${environment.apiUrl}/clases`;
 
   constructor(private http: HttpClient) {}
 
@@ -27,10 +28,12 @@ export class ClaseService {
     console.log('Headers creados:', headers);
 
     console.log('Despues de HttpHeaders');
-    return this.http.get<Clase[]>(`${this.apiUrl}`, { headers }).pipe(
+    return this.http.get<Clase[]>(`${this.apiUrl}`, { headers, observe: 'response' }).pipe(
       tap((response) => {
+        console.log('Estado HTTP:', response.status); // Verifica si es 200 o algún código de error
         console.log('Respuesta sin procesar:', response);
       }),
+      map(response => response.body as Clase[]), // Extraer el cuerpo de la respuesta (que es un array de Clase[])
       catchError((error) => {
         console.error('Error al hacer la solicitud HTTP:', error);
         return throwError(() => error); // Re-emite el error para que pueda ser capturado en el componente

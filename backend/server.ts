@@ -402,7 +402,7 @@ app.post('/api/clases', verifyToken, checkRole(['admin', 'teacher']), async (req
 
 
 //Ruta para obtener las clases
-app.get('/api/clases',async (req: express.Request, res: express.Response) => {
+app.get('/clases',async (req: express.Request, res: express.Response) => {
   console.log('Intento de obtener clases. User ID:', req.userId, 'Rol:', req.userRole);
   console.log('Headers recibidos server:', req.headers);
 
