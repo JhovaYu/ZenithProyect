@@ -36,25 +36,26 @@ export class AdminPage implements OnInit {
       const token = this.authService.getToken();
       console.log('Token being sent:', token); // Para depuración
 
-      this.http.post('http://localhost:3000/api/admin/register', this.registerForm.value, {
+      this.http.post('${this.apiUrl}/api/admin/register', this.registerForm.value, {
         headers: new HttpHeaders({
           'Authorization': `Bearer ${token}`
         })
       }).subscribe({
         next: (response) => {
-          console.log('Usuario registrado con éxito', response);
+          console.log('Usuario registrado con éxito vamooo', response);
           this.registerForm.reset();
         },
         error: (error) => {
-          console.error('Error al registrar usuario', error);
+          console.error('Error al registrar usuario 3', error);
           // Muestra más detalles del error
           if (error.error && error.error.message) {
-            console.error('Mensaje de error del servidor:', error.error.message);
+            console.error('Mensaje de error del servidor 2:', error.error.message);
           }
         }
       });
     }
   }
+
 
   toggleRol() {
     const currentRol = this.registerForm.get('rol')?.value;
