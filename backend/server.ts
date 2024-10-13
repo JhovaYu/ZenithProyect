@@ -305,7 +305,7 @@ const isAdmin = (req: express.Request, res: express.Response, next: express.Next
 };
 
 // Nueva ruta para que los admins registren otros usuarios
-app.post('/admin/register', verifyToken, isAdmin, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.post('api/admin/register', verifyToken, isAdmin, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.log('Intento de registro de admin. User ID:', req.userId, 'Role:', req.userRole);
   try {
     const { nombre, apellido, matricula, email, password, rol } = req.body;
