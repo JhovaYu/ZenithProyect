@@ -20,10 +20,7 @@ export async function generateAttendanceReport(claseId: number, date: string): P
     const asistencias = await Attendance.findAll({
       where: {
         claseId: claseId,
-        date: {
-          [Op.gte]: date + ' 00:00:00',
-          [Op.lte]: date + ' 23:59:59'
-        }
+        
       },
       include: [{
         model: User,
