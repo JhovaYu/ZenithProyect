@@ -1,5 +1,5 @@
-import { Model, DataTypes, Sequelize, BelongsToGetAssociationMixin, BelongsToSetAssociationMixin } from 'sequelize';
-import { UserInstance } from './user.model';
+import { Model, DataTypes, Sequelize, BelongsToGetAssociationMixin, BelongsToSetAssociationMixin, ModelAttributes, ModelStatic } from 'sequelize';
+import { UserInstance, UserModel } from './user.model';
 
 interface AttendanceAttributes {
   id?: number;
@@ -12,9 +12,15 @@ interface AttendanceAttributes {
 
 interface AttendanceInstance extends Model<AttendanceAttributes>, AttendanceAttributes {
   User?: UserInstance;
+  getUser: BelongsToGetAssociationMixin<UserInstance>;
+  setUser: BelongsToSetAssociationMixin<UserInstance, number>;
 }
 
-const AttendanceModel = (sequelize: Sequelize) => {
+interface AttendanceModelStatic extends ModelStatic<AttendanceInstance> {
+  associate?: (models: { User: ReturnType<typeof UserModel> }) => void;
+}
+
+const AttendanceModel = (sequelize: Sequelize): AttendanceModelStatic => {
   const Attendance = sequelize.define<AttendanceInstance>('Attendance', {
     id: {
       type: DataTypes.INTEGER,
@@ -42,10 +48,13 @@ const AttendanceModel = (sequelize: Sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     }
-  });
+  } as ModelAttributes<AttendanceInstance>);
 
+  (Attendance as AttendanceModelStatic).associate = (models: { User: ReturnType<typeof UserModel> }) => {
+    Attendance.belongsTo(models.User, { foreignKey: 'studentId' });
+  };
 
-  return Attendance;
+  return Attendance as AttendanceModelStatic;
 };
 
-export { AttendanceModel, AttendanceInstance, AttendanceAttributes };
+export { AttendanceModel, AttendanceInstance, AttendanceAttributes, AttendanceModelStatic };

@@ -10,7 +10,7 @@ export async function generateAttendanceReport(claseId: number, date: string): P
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Asistencia');
 
-  worksheet.addRow(['Estudiante', 'Matrícula', 'Correo', 'Equipo']);
+  worksheet.addRow(['Nombre Completo', 'Matrícula', 'Correo', 'Equipo']);
 
   try {
     const asistencias = await Attendance.findAll({
@@ -25,13 +25,19 @@ export async function generateAttendanceReport(claseId: number, date: string): P
     });
 
     asistencias.forEach((asistencia: AttendanceInstance) => {
+      if(asistencia.User) {
+      const estudiante = asistencia.User ;
       worksheet.addRow([
-        `${asistencia.User?.nombre || ''} ${asistencia.User?.apellido || ''}`,
-        asistencia.User?.matricula || '',
-        asistencia.User?.email || '',
-        asistencia.equipo
+        estudiante.nombre + ' ' + estudiante.apellido,
+        estudiante.matricula,
+        estudiante.email,
+        asistencia.equipo,
       ]);
+      } else {
+        console.log('Estudiante no encontrado');
+      }
     });
+  
 
     return await workbook.xlsx.writeBuffer() as Buffer;
   } catch (error) {

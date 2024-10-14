@@ -670,6 +670,7 @@ app.post('/attendance/end', verifyToken, checkRole(['teacher']), async (req: exp
 
 
 // Endpoint para generar informe de asistencia
+/*
 app.get('/api/attendance/report/:claseId/:date', verifyToken, checkRole(['admin', 'teacher']), async (req: express.Request, res: express.Response) => {
   try {
     const { claseId, date } = req.params;
@@ -688,6 +689,7 @@ app.get('/api/attendance/report/:claseId/:date', verifyToken, checkRole(['admin'
     }
   }
 });
+*/
 
 
 
