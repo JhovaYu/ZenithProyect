@@ -53,7 +53,7 @@ const AttendanceModel = (sequelize: Sequelize): AttendanceModelStatic => {
   } as ModelAttributes<AttendanceInstance>);
 
   (Attendance as AttendanceModelStatic).associate = (models: { User: ReturnType<typeof UserModel> }) => {
-    Attendance.belongsTo(models.User, { foreignKey: 'studentId' });
+    Attendance.belongsTo(models.User, { foreignKey: 'studentId', as: 'User' });
   };
 
   return Attendance as AttendanceModelStatic;

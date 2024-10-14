@@ -14,5 +14,14 @@ export function initializeAssociations() {
   User.hasMany(Attendance, { foreignKey: 'studentId' });
   Attendance.belongsTo(User, { foreignKey: 'studentId' });
 
-  return { User, Clase, Attendance };
+  const models = { User, Clase, Attendance };
+
+  // Inicializa asociaciones (si algún modelo tiene una función 'associate')
+  Object.values(models).forEach((model: any) => {
+    if (typeof model.associate === 'function') {
+      model.associate(models);
+    }
+  });
+
+  return { models, User, Clase, Attendance };
 }
