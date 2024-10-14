@@ -7,8 +7,8 @@ import { Op } from 'sequelize';
 
 
 
-export async function generateAttendanceReport(claseId: number, date: string): Promise<Buffer> {
-  console.log('Generando informe de asistencia para claseId:', claseId, 'y fecha:', date);
+export async function generateAttendanceReport(claseId: number): Promise<Buffer> {
+  console.log('Generando informe de asistencia para claseId:', claseId, 'y fecha:');
 
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Asistencia');
@@ -16,7 +16,7 @@ export async function generateAttendanceReport(claseId: number, date: string): P
   worksheet.addRow(['Nombre Completo', 'Matrícula', 'Correo', 'Equipo', 'Presente']);
 
   try {
-    console.log('Buscando asistencias para claseId:', claseId, 'y fecha:', date);
+    console.log('Buscando asistencias para claseId:', claseId, 'y fecha:');
     const asistencias = await Attendance.findAll({
       where: {
         claseId: claseId,

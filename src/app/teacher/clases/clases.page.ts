@@ -351,14 +351,14 @@ export class ClasesPage implements OnInit {
     try {
       console.log('Solicitando informe de asistencia a la API...');
       const response = await firstValueFrom(
-        this.http.get(`/api/attendance/report/${clase.id_clase}/${date}`, { responseType: 'blob' })
+        this.http.get(`/api/attendance/report/${clase.id_clase}`, { responseType: 'blob' })
       );
       console.log('Respuesta recibida de la API');
 
       
       if (response) {
         console.log('Respuesta no vacía, procesando...');
-        const url = window.URL.createObjectURL(response);
+        const url = window.URL.createObjectURL(new Blob([response]));
         console.log('URL creada:', url);
         const a = document.createElement('a');
         document.body.appendChild(a);
@@ -373,6 +373,7 @@ export class ClasesPage implements OnInit {
         console.error('La respuesta está vacía');
         
       }
+
       
     } catch (error) {
       console.error('Error al generar el informe:', error);

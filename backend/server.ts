@@ -587,17 +587,17 @@ app.post('/api/attendance/register', verifyToken, checkRole(['student']), async 
 });
 
 //Ruta para generar el informe de asistencia
-app.get('/api/attendance/report/:claseId/:date', verifyToken, checkRole(['teacher']), async (req, res, next) => {
-  console.log('Solicitud de informe de asistencia recibida para claseId:', req.params.claseId, 'y fecha:', req.params.date);
+app.get('/api/attendance/report/:claseId', verifyToken, checkRole(['teacher']), async (req, res, next) => {
+  console.log('Solicitud de informe de asistencia recibida para claseId:', req.params.claseId);
 
   try {
-    const { claseId, date } = req.params;
-    console.log('Generando informe de asistencia para claseId:', claseId, 'y fecha:', date);
-    const buffer = await generateAttendanceReport(parseInt(claseId), date);
+    const { claseId} = req.params;
+    console.log('Generando informe de asistencia para claseId:', claseId, 'y fecha:');
+    const buffer = await generateAttendanceReport(parseInt(claseId));
     console.log('Informe de asistencia generado con éxito');
     
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', `attachment; filename=asistencia_${claseId}_${date}.xlsx`);
+    res.setHeader('Content-Disposition', `attachment; filename=asistencia_${claseId}.xlsx`);
     console.log('Enviando informe de asistencia como archivo adjunto');
     res.send(buffer);
   } catch (error) {
