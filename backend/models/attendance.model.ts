@@ -1,6 +1,7 @@
 import { Model, DataTypes, Sequelize, BelongsToGetAssociationMixin, BelongsToSetAssociationMixin, ModelAttributes, ModelStatic } from 'sequelize';
 import { UserInstance, UserModel } from './user.model';
 
+console.log('Definiendo modelo de asistencia');
 interface AttendanceAttributes {
   id?: number;
   claseId: number;
@@ -10,6 +11,7 @@ interface AttendanceAttributes {
   equipo: string;
 }
 
+console.log('Definiendo interfaz de instancia de asistencia');
 interface AttendanceInstance extends Model<AttendanceAttributes>, AttendanceAttributes {
   User?: UserInstance;
   getUser: BelongsToGetAssociationMixin<UserInstance>;

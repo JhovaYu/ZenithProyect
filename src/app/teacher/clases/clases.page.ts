@@ -344,19 +344,28 @@ export class ClasesPage implements OnInit {
   }
 
   async generarInforme(clase: Clase) {
+    console.log('Generando informe de asistencia para clase:', clase.id_clase);
     const date = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    console.log('Fecha seleccionada:', date);
+
     try {
+      console.log('Solicitando informe de asistencia a la API...');
       const response = await firstValueFrom(
         this.http.get(`/api/attendance/report/${clase.id_clase}/${date}`, { responseType: 'blob' })
       );
+      console.log('Respuesta recibida de la API');
+
       
       if (response) {
+        console.log('Respuesta no vacía, procesando...');
         const url = window.URL.createObjectURL(response);
+        console.log('URL creada:', url);
         const a = document.createElement('a');
         document.body.appendChild(a);
         a.setAttribute('style', 'display: none');
         a.href = url;
         a.download = `asistencia_${clase.id_clase}_${date}.xlsx`;
+        console.log('Descargando archivo...');
         a.click();
         window.URL.revokeObjectURL(url);
         a.remove();

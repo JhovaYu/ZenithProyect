@@ -588,14 +588,20 @@ app.post('/api/attendance/register', verifyToken, checkRole(['student']), async 
 
 //Ruta para generar el informe de asistencia
 app.get('/api/attendance/report/:claseId/:date', verifyToken, checkRole(['teacher']), async (req, res, next) => {
+  console.log('Solicitud de informe de asistencia recibida para claseId:', req.params.claseId, 'y fecha:', req.params.date);
+
   try {
     const { claseId, date } = req.params;
+    console.log('Generando informe de asistencia para claseId:', claseId, 'y fecha:', date);
     const buffer = await generateAttendanceReport(parseInt(claseId), date);
+    console.log('Informe de asistencia generado con éxito');
     
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', `attachment; filename=asistencia_${claseId}_${date}.xlsx`);
+    console.log('Enviando informe de asistencia como archivo adjunto');
     res.send(buffer);
   } catch (error) {
+    console.error('Error al generar el informe de asistencia:', error);
     next(error);
     res.status(500).json({ message: 'Error al generar el informe de asistencia', error: error instanceof Error ? error.message : 'Un error desconocido ocurrió' });
   }
